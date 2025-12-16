@@ -1,0 +1,16 @@
+protocolSchema: "v3"
+name: "ngs-pipeline-meta-to-ids"
+description: "RAW to IDS Protocol to parse NGS pipeline meta data files"
+
+steps:
+  - id: ngs-pipeline-raw-to-ids-task
+    task:
+      namespace: private-bayer
+      slug: ngs-pipeline-raw-to-ids
+      version: v2.0.0
+      function: main
+    input:
+      input_file: $( workflow.inputFile )
+      ids_namespace: private-bayer
+      ids_type: ngs-pipeline
+      ids_version: v2.0.0

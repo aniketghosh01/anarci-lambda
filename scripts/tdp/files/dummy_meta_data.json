@@ -1,0 +1,89 @@
+{
+  "fields": {
+    "ngs_run": {
+      "name": "NGS_RUN015",
+      "benchling_registry_id": "NGS_RUN015",
+      "benchling_api_id": "bfi_4z9qYLIR"
+    },
+    "ngs_pp": {
+      "name": "NGS_PP010",
+      "benchling_registry_id": "NGS_PP010",
+      "benchling_api_id": "bfi_yKKeqPvo"
+    },
+    "ngs_type": {
+      "name": "Clone Pool",
+      "benchling_schema_id": "assaysch_lKdA5G3j"
+    },
+    "project": {
+      "name": "[Bayer] - NGS Pipeline Integration",
+      "benchling_api_id": "src_drmlF4RB"
+    },
+    "entry": {
+      "name": "(WF) Clone pools to NGS [Stelios Test 03.06.2024]",
+      "benchling_api_id": "etr_GhWFivuQ"
+    },
+    "software": {
+      "name": "BiologicsNGS",
+      "version": "0.29.13"
+    },
+    "sequencer": {
+      "name": "Illumina"
+    },
+    "user": {
+      "name": "Stylianos Fodelianakis"
+    },
+    "time": {
+      "created": "2025-04-02 14:50:40"
+    },
+    "kumo_files": [
+      {
+        "name": "NGS_RUN015/testData_clone_pool_R1.fastq.gz",
+        "bucket": "kumo-6hs-p5gq8e9ecr1xj4q6hy8nf4bx8nqbkeuc1a-s3alias/dds-ta-raw-ngs"
+      },
+      {
+        "name": "NGS_RUN015/testData_clone_pool_R2.fastq.gz",
+        "bucket": "kumo-6hs-p5gq8e9ecr1xj4q6hy8nf4bx8nqbkeuc1a-s3alias/dds-ta-raw-ngs"
+      }
+    ],
+    "related_files": [
+      {
+        "name": "ngs_test_cp_vl_uniques.fasta",
+        "path": "bayer-br-dev/6f166302-df8a-4044-ab4b-7ddd3eefb50b/RAW/entry/ngs_test_cp_vl_uniques.fasta",
+        "size": {
+          "value": 11.2,
+          "unit": "KB"
+        },
+        "checksum": {
+          "value": "47592756dae850706c28598464954857",
+          "algorithm": "unknown"
+        },
+        "pointer": {
+          "fileId": "e638c4cc-1a84-4477-9028-56c8e93b7411",
+          "bucket": "bayer-dev-prod-datalake",
+          "version": "4CrBPJlGCb2qVMIwFyV4FbhrZYa8Daah",
+          "type": "fasta",
+          "fileKey": "47592756dae850706c28598464954857"
+        }
+      },
+      {
+        "name": "ngs_test_cp_vh_uniques.fasta",
+        "path": "bayer-br-dev/6f166302-df8a-4044-ab4b-7ddd3eefb50b/RAW/entry/ngs_test_cp_vh_uniques.fasta",
+        "size": {
+          "value": 11.2,
+          "unit": "KB"
+        },
+        "checksum": {
+          "value": "94720d86ac3bffa6bb035ca1cbae4667",
+          "algorithm": "unknown"
+        },
+        "pointer": {
+          "fileId": "a39f1853-48c1-4994-b6f9-72c3739b676e",
+          "bucket": "bayer-dev-prod-datalake",
+          "version": "iubztxqRvcl0_hqBsCVEWvK9rQGIGFGm",
+          "type": "fasta",
+          "fileKey": "94720d86ac3bffa6bb035ca1cbae4667"
+        }
+      }
+    ]
+  }
+}

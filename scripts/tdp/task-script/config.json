@@ -1,0 +1,10 @@
+{
+    "language": "python",
+    "runtime": "python3.11",
+    "functions": [
+        {
+            "slug": "main",
+            "function": "main.main"
+        }
+    ]
+}

@@ -1,0 +1,441 @@
+{
+  "$id": "https://ids.tetrascience.com/private-bayer/ngs-pipeline/v2.0.0/schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "NGS-pipeline meta data schema.",
+  "properties": {
+    "@idsType": {
+      "const": "ngs-pipeline",
+      "type": "string"
+    },
+    "@idsVersion": {
+      "const": "v2.0.0",
+      "type": "string"
+    },
+    "@idsNamespace": {
+      "const": "private-bayer",
+      "type": "string"
+    },
+    "fields": {
+      "$ref": "#/definitions/NGSPipelineResults"
+    }
+  },
+  "required": [
+    "@idsType",
+    "@idsVersion",
+    "@idsNamespace",
+    "fields"
+  ],
+  "type": "object",
+  "definitions": {
+    "BenchlingEntity": {
+      "additionalProperties": false,
+      "description": "Benchling entity schema\n:field name: benchling entity name\n:field benchling_api_id: benchling api id  \n:field benchling_registry_id: benchling registry id\n:field benchling_schema_id: benchling schema id",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "benchling_api_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "benchling_registry_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "benchling_schema_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "Checksum": {
+      "additionalProperties": false,
+      "description": "Checksum value and algorithm associated with a file.",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "algorithm": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "algorithm"
+      ],
+      "type": "object"
+    },
+    "KumoFile": {
+      "additionalProperties": false,
+      "description": "Kumo file path\n:field name: kumo object path relative to s3 bucket \n:field bucket: kumo s3 bucket path",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "bucket": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "bucket"
+      ],
+      "type": "object"
+    },
+    "NGSPipelineResults": {
+      "additionalProperties": false,
+      "description": "NGS-pipeline meta data fields\n:field ngs_run: Benchling NGS RUN\n:field ngs_pp: Benchling NGS PP\n:field ngs_type: Benchling NGS type (Clone/Clone Pool)\n:field project: Benchling project\n:field entry: Benchling notebook entry\n:field software: NGS-pipeline version\n:field sequencer: Sequencer details\n:field user: User details\n:field time: Creation time \n:field kumo_files: List of NGS RUN files in Kumo\n:field related_files: List of NGS RUN related files in TDP",
+      "properties": {
+        "ngs_run": {
+          "$ref": "#/definitions/BenchlingEntity"
+        },
+        "ngs_pp": {
+          "$ref": "#/definitions/BenchlingEntity"
+        },
+        "ngs_type": {
+          "$ref": "#/definitions/BenchlingEntity"
+        },
+        "project": {
+          "$ref": "#/definitions/BenchlingEntity"
+        },
+        "entry": {
+          "$ref": "#/definitions/BenchlingEntity"
+        },
+        "software": {
+          "$ref": "#/definitions/Software"
+        },
+        "sequencer": {
+          "$ref": "#/definitions/SequencerType"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "time": {
+          "$ref": "#/definitions/Time"
+        },
+        "kumo_files": {
+          "items": {
+            "$ref": "#/definitions/KumoFile"
+          },
+          "type": "array"
+        },
+        "related_files": {
+          "items": {
+            "$ref": "#/definitions/RelatedFile"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "ngs_run",
+        "ngs_pp",
+        "ngs_type",
+        "project",
+        "entry",
+        "software",
+        "user",
+        "time"
+      ],
+      "type": "object"
+    },
+    "Pointer": {
+      "additionalProperties": false,
+      "description": "A pointer stores the location metadata of the file on TDP",
+      "properties": {
+        "fileKey": {
+          "description": "AWS S3 file key",
+          "type": "string"
+        },
+        "version": {
+          "description": "AWS S3 file version number",
+          "type": "string"
+        },
+        "bucket": {
+          "description": "AWS S3 bucket",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of the file, e.g. 's3file', 'parquet'",
+          "type": "string"
+        },
+        "fileId": {
+          "description": "File ID (UUID) in TDP",
+          "type": "string"
+        }
+      },
+      "required": [
+        "fileKey",
+        "version",
+        "bucket",
+        "type",
+        "fileId"
+      ],
+      "type": "object"
+    },
+    "RawTime": {
+      "additionalProperties": false,
+      "description": "The base model for capturing common time fields found in primary data.",
+      "properties": {
+        "start": {
+          "description": "Process/experiment/task start time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created": {
+          "description": "Data created time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stop": {
+          "description": "Process/experiment/task stop/finish time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "duration": {
+          "description": "Process/experiment/task duration",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_updated": {
+          "description": "Data last updated time of a file/method",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "acquired": {
+          "description": "Data acquired/exported/captured time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modified": {
+          "description": "Data last modified/edited time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lookup": {
+          "description": "Data lookup time",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "RelatedFile": {
+      "additionalProperties": false,
+      "description": "A reference to a file related to this IDS stored on the Tetra Data Platform.",
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size": {
+          "$ref": "#/definitions/ValueUnit"
+        },
+        "checksum": {
+          "$ref": "#/definitions/Checksum"
+        },
+        "pointer": {
+          "$ref": "#/definitions/Pointer"
+        }
+      },
+      "required": [
+        "pointer"
+      ],
+      "type": "object"
+    },
+    "SequencerType": {
+      "additionalProperties": false,
+      "description": "Sequencer type\n:field name: type name (e.g. Illumina/Pacbio)\n:field serial_number: sequencer serial number  ",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "serial_number": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "Software": {
+      "additionalProperties": false,
+      "description": "Software application that most recently handled the data (file) or the application\nthe data (file) is intended for. For example, applications can include Electronic\nLab Notebooks (ELN), Instrument Control Software (ICS), Chromatography Data Systems\n(CDS), or instrument-specific analysis software.",
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "Time": {
+      "additionalProperties": false,
+      "description": "A model for datetime values converted to a standard ISO format and their\nrespective raw datetime values in the primary data.",
+      "properties": {
+        "start": {
+          "description": "Process/experiment/task start time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created": {
+          "description": "Data created time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stop": {
+          "description": "Process/experiment/task stop/finish time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "duration": {
+          "description": "Process/experiment/task duration",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_updated": {
+          "description": "Data last updated time of a file/method",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "acquired": {
+          "description": "Data acquired/exported/captured time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "modified": {
+          "description": "Data last modified/edited time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lookup": {
+          "description": "Data lookup time",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw": {
+          "$ref": "#/definitions/RawTime"
+        }
+      },
+      "type": "object"
+    },
+    "User": {
+      "additionalProperties": false,
+      "description": "Metadata of the user executing a run.",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "description": "User type like 'admin', 'manager', 'power user', 'standard user'. This information is usually from the instrument software",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ValueUnit": {
+      "additionalProperties": false,
+      "description": "A quantity, represented by a value with a unit.",
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "type": "object"
+    }
+  }
+}

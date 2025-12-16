@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "helix_api"
+version = "0.2.0"
+description = "NGS-pipeline API utilities"
+authors = ["Wiktor Gorczak <wiktor.gorczak.ext@bayer.com>", 
+           "Joris Chau <joris.chau.ext@bayer.com>"]
+license = "Open Analytics NV (2025)"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.9.2"
+benchling-sdk = "^1.17.1"
+pydantic-settings = "^2.5.2"
+requests = "^2.32.3"
+fastapi = "^0.115.0"
+pandas = "^2.2.3"
+uvicorn = "^0.31.0"
+ts-ids-components = {version = "^0.5.0", source = "ts-pypi-external"}
+numpy = "1.26.4"
+tetrascience-cli = "^1.2.0"
+ts-sdk = "^2.2.4"
+ts-ids-core = "^1.0.2"
+python-multipart = "^0.0.20"
+ts-task-script-utils = "^2.3.2"
+
+[[tool.poetry.source]]
+name = "ts-pypi-external"
+url = "https://tetrascience.jfrog.io/artifactory/api/pypi/ts-pypi-external/simple/"
+priority = "supplemental"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,153 @@
+{
+	"mappings": {
+		"properties": {
+			"fields": {
+				"properties": {
+					"ngs_run": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"benchling_api_id": {
+								"type": "keyword"
+							},
+							"benchling_registry_id": {
+								"type": "keyword"
+							}
+						}
+					},
+					"ngs_pp": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"benchling_api_id": {
+								"type": "keyword"
+							},
+							"benchling_registry_id": {
+								"type": "keyword"
+							}
+						}
+					},
+					"ngs_type": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"benchling_schema_id": {
+								"type": "keyword"
+							}
+						}
+					},
+					"project": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"benchling_api_id": {
+								"type": "keyword"
+							}
+						}
+					},
+					"entry": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"benchling_api_id": {
+								"type": "keyword"
+							}
+						}
+					},
+					"software": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"version": {
+								"type": "keyword"
+							}
+						}
+					},
+					"user": {
+						"properties": {
+							"name": {
+								"type": "keyword"
+							}
+						}
+					},
+					"time": {
+						"properties": {
+							"created": {
+								"type": "date"
+							}
+						}
+					},
+					"kumo_files": {
+						"type": "nested",
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"bucket": {
+								"type": "keyword"
+							}
+						}
+					},
+					"related_files": {
+						"type": "nested",
+						"properties": {
+							"name": {
+								"type": "keyword"
+							},
+							"path": {
+								"type": "keyword"
+							},
+							"size": {
+								"properties": {
+									"value": {
+										"type": "float"
+									},
+									"unit": {
+										"type": "keyword"
+									}
+								}
+							},
+							"checksum": {
+								"properties": {
+									"value": {
+										"type": "keyword"
+									},
+									"algorithm": {
+										"type": "keyword"
+									}
+								}
+							},
+							"pointer": {
+								"properties": {
+									"fileId": {
+										"type": "keyword"
+									},
+									"bucket": {
+										"type": "keyword"
+									},
+									"version": {
+										"type": "keyword"
+									},
+									"type": {
+										"type": "keyword"
+									},
+									"fileKey": {
+										"type": "keyword"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"dynamic_templates": []
+	},
+	"nonSearchableFields": []
+}
