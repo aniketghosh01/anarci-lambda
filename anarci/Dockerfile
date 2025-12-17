@@ -31,13 +31,20 @@ WORKDIR /app
 # Copy from local such that we have everything in internal version control
 # RUN git clone https://github.com/oxpig/ANARCI.git /app/ANARCI
 COPY ./anarci/ANARCI /app/ANARCI
+
+# Normalize CRLF -> LF in pipeline scripts (fixes $'\r' errors)
+RUN find /app/ANARCI/build_pipeline -type f \( -name "*.sh" -o -name "*.py" \) -exec dos2unix {} \;
+
 # COPY .git/modules/anarci/ANARCI/refs/heads/master /app/ANARCI/ANARCI_VERSION
 ARG ANARCI_VERSION=unknown
 RUN echo "$ANARCI_VERSION" > /app/ANARCI/ANARCI_VERSION
 
-RUN conda install -c conda-forge biopython -y
-RUN conda install -c bioconda hmmer=3.3.2 -y
+# Install runtime deps (Biopython, HMMER, MUSCLE) required by setup pipeline
+RUN conda install -y -c conda-forge -c bioconda biopython hmmer=3.3.2 muscle && \
+    conda clean -afy
+
 WORKDIR /app/ANARCI
 
 
 RUN python setup.py install
+
