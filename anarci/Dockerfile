@@ -33,6 +33,19 @@ RUN echo "$ANARCI_VERSION" > /app/ANARCI/ANARCI_VERSION
 RUN conda install -y -c conda-forge -c bioconda biopython hmmer=3.3.2 muscle && \
     conda clean -afy
 
+# Ensure MUSCLE is executable and globally accessible
+# (Conda should install the binary under $CONDA_DIR/bin/muscle; set exec bit and symlink to /usr/local/bin)
+RUN if [ -f "$CONDA_DIR/bin/muscle" ]; then \
+      ls -l $CONDA_DIR/bin/muscle || true && \
+      chmod 0755 $CONDA_DIR/bin/muscle && \
+      ln -sf $CONDA_DIR/bin/muscle /usr/local/bin/muscle; \
+    fi
+
+# Optional fallback: also install MUSCLE via apt if needed
+# (keeps a system copy at /usr/bin/muscle in case conda binary is mispackaged)
+RUN apt-get update && apt-get install -y --no-install-recommends muscle && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Sanity checks: no CRLF, tools present, script visible
 RUN bash -lc "set -e; \
   echo '--- Checking for CRLF remnants ---'; \
@@ -50,6 +63,3 @@ WORKDIR /app/ANARCI
 
 
 RUN python setup.py install
-
-
-
