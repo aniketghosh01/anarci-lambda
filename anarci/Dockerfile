@@ -42,7 +42,7 @@ RUN bash -lc "set -e; \
   which hmmpress && hmmpress -h | head -n 2; \
   which muscle && muscle -version | head -n 1; \
   echo '--- Preview RUN_pipeline.sh (first 20 lines) ---'; \
-  head -n 20 /app/  head -n 20 /app/ANARCI/build_pipeline/RUN_pipeline.sh \
+  head -n 20 /app/ANARCI/build_pipeline/RUN_pipeline.sh \
 "
 
 # Install ANARCI (this runs RUN_pipeline.sh to build curated alignments, HMMs, germlines.py)
@@ -50,5 +50,6 @@ WORKDIR /app/ANARCI
 
 
 RUN python setup.py install
+
 
 
