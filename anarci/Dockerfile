@@ -31,10 +31,13 @@ WORKDIR /app
 # Copy from local such that we have everything in internal version control
 # RUN git clone https://github.com/oxpig/ANARCI.git /app/ANARCI
 COPY ./anarci/ANARCI /app/ANARCI
-COPY .git/modules/anarci/ANARCI/refs/heads/master /app/ANARCI/ANARCI_VERSION
+# COPY .git/modules/anarci/ANARCI/refs/heads/master /app/ANARCI/ANARCI_VERSION
+ARG ANARCI_VERSION=unknown
+RUN echo "$ANARCI_VERSION" > /app/ANARCI/ANARCI_VERSION
 
 RUN conda install -c conda-forge biopython -y
 RUN conda install -c bioconda hmmer=3.3.2 -y
 WORKDIR /app/ANARCI
+
 
 RUN python setup.py install
