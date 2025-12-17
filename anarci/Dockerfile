@@ -58,8 +58,15 @@ RUN bash -lc "set -e; \
   head -n 20 /app/ANARCI/build_pipeline/RUN_pipeline.sh \
 "
 
+RUN if [ -f "/opt/conda/bin/ANARCI" ]; then \
+      dos2unix /opt/conda/bin/ANARCI || true && \
+      chmod 0755 /opt/conda/bin/ANARCI && \
+      ln -sf /opt/conda/bin/ANARCI /usr/local/bin/ANARCI; \
+    fi
+
 # Install ANARCI (this runs RUN_pipeline.sh to build curated alignments, HMMs, germlines.py)
 WORKDIR /app/ANARCI
 
 
 RUN python setup.py install
+
