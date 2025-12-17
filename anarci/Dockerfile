@@ -1,50 +1,54 @@
 FROM ubuntu:22.04
-
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        wget \
-#        git \
-        bzip2 \
-        ca-certificates \
-        libglib2.0-0 \
-        libxext6 \
-        libsm6 \
-        libxrender1 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# System deps + dos2unix for CRLF conversion
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget bzip2 ca-certificates dos2unix \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Miniconda
+# Miniconda
 ENV CONDA_VERSION=py39_25.1.1-2
 ENV CONDA_DIR=/opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh -O /miniconda.sh && \
-    bash /miniconda.sh -b -p $CONDA_DIR && \
-    rm /miniconda.sh && \
+RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-${CONDA_VERSION}-Linux-x86_64.sh -O /miniconda.sh && \
+    bash /miniconda.sh -b -p $CONDA_DIR && rm /miniconda.sh && \
     $CONDA_DIR/bin/conda clean -afy
 ENV PATH=$CONDA_DIR/bin:$PATH
 
-# Setup ANARCI
+# Setup ANARCI source (ensure submodule content is present in build context)
 WORKDIR /app
-
-# Copy from local such that we have everything in internal version control
-# RUN git clone https://github.com/oxpig/ANARCI.git /app/ANARCI
 COPY ./anarci/ANARCI /app/ANARCI
 
-# Normalize CRLF -> LF in pipeline scripts (fixes $'\r' errors)
-RUN find /app/ANARCI/build_pipeline -type f \( -name "*.sh" -o -name "*.py" \) -exec dos2unix {} \;
+# Normalize CRLF -> LF in ALL pipeline files and ensure RUN_pipeline.sh is executable
+RUN find /app/ANARCI/build_pipeline -type f \( -name "*.sh" -o -name "*.py" \) -exec dos2unix {} \; && \
+    # Add a bash shebang if missing (forces bash over /bin/sh)
+    grep -q '^#!' /app/ANARCI/build_pipeline/RUN_pipeline.sh || \
+      sed -i '1s|^|#!/usr/bin/env bash\n|' /app/ANARCI/build_pipeline/RUN_pipeline.sh && \
+    chmod +x /app/ANARCI/build_pipeline/RUN_pipeline.sh
 
-# COPY .git/modules/anarci/ANARCI/refs/heads/master /app/ANARCI/ANARCI_VERSION
+# Embed ANARCI version (CI friendly; avoids .git path issues)
 ARG ANARCI_VERSION=unknown
 RUN echo "$ANARCI_VERSION" > /app/ANARCI/ANARCI_VERSION
 
-# Install runtime deps (Biopython, HMMER, MUSCLE) required by setup pipeline
+# Install runtime deps required by the pipeline (Biopython, HMMER, MUSCLE)
 RUN conda install -y -c conda-forge -c bioconda biopython hmmer=3.3.2 muscle && \
     conda clean -afy
 
+# Sanity checks: no CRLF, tools present, script visible
+RUN bash -lc "set -e; \
+  echo '--- Checking for CRLF remnants ---'; \
+  ! grep -R $'\r' /app/ANARCI/build_pipeline && echo 'OK: no CRLF in pipeline files'; \
+  echo '--- Tools ---'; \
+  which hmmbuild && hmmbuild -h | head -n 2; \
+  which hmmpress && hmmpress -h | head -n 2; \
+  which muscle && muscle -version | head -n 1; \
+  echo '--- Preview RUN_pipeline.sh (first 20 lines) ---'; \
+  head -n 20 /app/  head -n 20 /app/ANARCI/build_pipeline/RUN_pipeline.sh \
+"
+
+# Install ANARCI (this runs RUN_pipeline.sh to build curated alignments, HMMs, germlines.py)
 WORKDIR /app/ANARCI
 
 
 RUN python setup.py install
+
 
